@@ -29,3 +29,6 @@
 2022-07-07T13:01:10.3076262 500 : [{"timestamp":"2022-07-07T17:00:20.599+00:00","status":500,"error":"Internal Server Error","message":"Cannot invoke \"org.springframework.jdbc.core.JdbcTemplate.queryForRowSet(String, Object[])\" because \"this.jdbcTemplate\" is null","path":"/accounts"}]
 2022-07-07T13:06:44.8507499 500 : [{"timestamp":"2022-07-07T17:01:28.998+00:00","status":500,"error":"Internal Server Error","message":"No DataSource set","path":"/accounts"}]
 2022-07-07T13:06:50.4628742 500 : [{"timestamp":"2022-07-07T17:06:50.437+00:00","status":500,"error":"Internal Server Error","message":"No DataSource set","path":"/accounts"}]
+2022-07-07T13:09:21.5898545 400 : [{"timestamp":"2022-07-07T17:09:21.550+00:00","status":400,"error":"Bad Request","message":"User registration failed.","path":"/register"}]
+2022-07-07T13:09:26.0167667 500 : [{"timestamp":"2022-07-07T17:09:26.012+00:00","status":500,"error":"Internal Server Error","message":"Invalid column name; nested exception is java.sql.SQLException: Invalid column name","path":"/accounts"}]
+2022-07-07T13:14:31.7235134 500 : [{"timestamp":"2022-07-07T17:14:31.669+00:00","status":500,"error":"Internal Server Error","message":"Invalid column name; nested exception is java.sql.SQLException: Invalid column name","path":"/accounts"}]
