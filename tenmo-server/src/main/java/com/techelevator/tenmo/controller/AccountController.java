@@ -1,37 +1,9 @@
 package com.techelevator.tenmo.controller;
 
+
+
+
 import com.techelevator.tenmo.dao.AccountDao;
-<<<<<<< HEAD
-import com.techelevator.tenmo.dao.JdbcUserDao;
-import com.techelevator.tenmo.dao.UserDao;
-import com.techelevator.tenmo.model.LoginDTO;
-import com.techelevator.tenmo.model.User;
-import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
-import java.security.Principal;
-import java.util.List;
-
-@RestController
-public class AccountController {
-
-    private UserDao userDao ;
-    private AccountDao accountDao;
-
-public AccountController(UserDao userDao, AccountDao accountDao) {
-    this.userDao = userDao;
-    this.accountDao = accountDao;
-}
-
-
-    @RequestMapping(path = "/accounts")
-    public double getBalance(Principal principal) {
-       userDao.findIdByUsername(principal.getName()){
-
-    }
-
-
-=======
 import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.dao.UserDao;
@@ -53,7 +25,7 @@ public class AccountController {
     private AccountDao accountDao;
     private UserDao userDao;
 
-    public AccountController(AccountDao accountDao, UserDao userDao){
+    public AccountController(AccountDao accountDao, UserDao userDao) {
         this.accountDao = accountDao;
         this.userDao = userDao;
     }
@@ -67,6 +39,6 @@ public class AccountController {
     public BigDecimal getBalance(Principal principal) {
         return accountDao.getBalance(userDao.findIdByUsername(principal.getName()));
     }
-
->>>>>>> 55fc7d9f494389ad8d4eeb76dd03a60ed00b1471
 }
+
+
