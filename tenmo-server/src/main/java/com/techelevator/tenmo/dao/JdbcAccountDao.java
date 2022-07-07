@@ -1,25 +1,33 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
+<<<<<<< HEAD
 
 import com.techelevator.tenmo.model.User;
 
+=======
+import com.techelevator.tenmo.model.Transfer;
+>>>>>>> 366c176875cddd7211f10ac8a2a6fdb68fb9622c
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Component
 public class JdbcAccountDao implements AccountDao{
 
     private JdbcTemplate jdbcTemplate;
-    private UserDao userDao;
 
+<<<<<<< HEAD
     public JdbcAccountDao(JdbcTemplate jdbcTemplate, UserDao userDao) {
+=======
+    public JdbcAccountDao(JdbcTemplate jdbcTemplate){
+>>>>>>> 366c176875cddd7211f10ac8a2a6fdb68fb9622c
         this.jdbcTemplate = jdbcTemplate;
-        this.userDao = userDao;
     }
 
 
