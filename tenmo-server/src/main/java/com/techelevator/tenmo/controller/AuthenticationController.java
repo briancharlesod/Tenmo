@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import com.techelevator.tenmo.dao.JdbcAccountDao;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,7 @@ import java.math.BigDecimal;
  * Controller to authenticate users.
  */
 @RestController
+//@PreAuthorize("isAuthenticated()")
 public class AuthenticationController {
 
     private final TokenProvider tokenProvider;
@@ -54,6 +56,7 @@ public class AuthenticationController {
         return new LoginResponse(jwt, user);
     }
 
+//    @PreAuthorize("permitAll")
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public void register(@Valid @RequestBody RegisterUserDTO newUser) {
