@@ -2,6 +2,7 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class App {
 
@@ -108,9 +110,17 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
-		
-	}
+        Transfer[] transfers = null;
+        try {
+            ResponseEntity<Transfer[]> response =
+                    restTemplate.exchange(API_BASE_URL + "accounts/transfers",
+                            HttpMethod.GET, makeAuthEntity(), Transfer[].class);
+            transfers = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        System.out.println(transfers);
+    }
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
