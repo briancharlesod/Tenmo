@@ -18,7 +18,10 @@ import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class App {
@@ -28,9 +31,9 @@ public class App {
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
-    private final TransferService transferService = new TransferService();
 
     private AuthenticatedUser currentUser;
+    private TransferService transferService;
 
     public static void main(String[] args) {
         App app = new App();
@@ -74,6 +77,7 @@ public class App {
     private void handleLogin() {
         UserCredentials credentials = consoleService.promptForCredentials();
         currentUser = authenticationService.login(credentials);
+        transferService = new TransferService(currentUser);
         if (currentUser == null) {
             consoleService.printErrorMessage();
         }
@@ -117,18 +121,25 @@ public class App {
     }
 
     private void viewTransferHistory() {
-        Transfer[] transfers = null;
-        try {
-            ResponseEntity<Transfer[]> response =
-                    restTemplate.exchange(API_BASE_URL + "accounts/transfers",
-                            HttpMethod.GET, makeAuthEntity(), Transfer[].class);
-            transfers = response.getBody();
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
+        Transfer[] transfers = transferService.viewTransferHistory();
+        Map<Integer,Transfer> transferIdMap = new LinkedHashMap<>();
+        transferIdMap.put(0,null);
+        if (transfers != null) {
+            for (Transfer transfer : transfers) {
+                transferIdMap.put(transfer.getTransfer_id(),transfer);
+                System.out.println("ID " + transfer.getTransfer_id() + " | FROM: " + transfer.getUsername_from() + " | TO: " + transfer.getUsername_to() + " | $" + transfer.getAmount());
+            }
+        } else {
+            consoleService.printErrorMessage();
         }
-        for (Transfer transfer : transfers) {
-            System.out.println("Transfer ID: " + transfer.getTransfer_id() + " | From Account No.: " + transfer.getAccount_from() + " | To Account No.: " + transfer.getAccount_to() + " | $" + transfer.getAmount());
+        int transferSelection = -1;
+        while (!transferIdMap.containsKey(transferSelection)) {
+            transferSelection = consoleService.promptForMenuSelection("Please enter transfer ID to view details (0 to cancel): ");
         }
+        if(transferSelection == 0){
+            mainMenu();
+        }
+        System.out.println(transferIdMap.get(transferSelection));
     }
 
     private void viewPendingRequests() {
@@ -136,14 +147,14 @@ public class App {
 
     }
 
-	private void sendBucks() {
-
-        Transfer transfer = consoleService.makeTransfer();
-    transferService.addTransfer(transfer);
-		
-	}
-
+    private void sendBucks() {
+        Transfer transferFromCLI = consoleService.makeTransfer();
+        Transfer transferFromAPI = transferService.addTransfer(transferFromCLI);
+        if (transferFromAPI == null) {
+            consoleService.printErrorMessage();
+        }
     }
+
 
     private void requestBucks() {
         // TODO Auto-generated method stub

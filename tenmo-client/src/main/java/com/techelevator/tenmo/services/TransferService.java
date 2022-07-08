@@ -18,16 +18,16 @@ public class TransferService {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
     private final RestTemplate restTemplate = new RestTemplate();
-    private final AuthenticatedUser authenticatedUser = new AuthenticatedUser();
+    private final AuthenticatedUser authenticatedUser;
 
-
-
+    public TransferService(AuthenticatedUser authenticatedUser){
+        this.authenticatedUser = authenticatedUser;
+    }
 
     public Transfer addTransfer(Transfer newTransfer) {
         Transfer returnedTransfer = null;
         try {
-            returnedTransfer = restTemplate.postForObject(API_BASE_URL + "transfers",
-                    makeTransferEntity(newTransfer), Transfer.class);
+            returnedTransfer = restTemplate.postForObject(API_BASE_URL + "transfers", makeTransferEntity(newTransfer), Transfer.class);
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
@@ -45,6 +45,17 @@ public class TransferService {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authenticatedUser.getToken());
         return new HttpEntity<>(headers);
+    }
+
+    public Transfer[] viewTransferHistory() {
+        Transfer[] transfers = null;
+        try {
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL + "transfers", HttpMethod.GET, makeAuthEntity(), Transfer[].class);
+            transfers = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return transfers;
     }
 
     public User[] getUsers() {
