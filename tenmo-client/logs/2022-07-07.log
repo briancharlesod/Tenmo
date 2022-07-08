@@ -44,3 +44,4 @@
 2022-07-07T20:27:04.6090487 404 : [{"timestamp":"2022-07-08T00:27:04.555+00:00","status":404,"error":"Not Found","message":"No message available","path":"/transfers"}]
 2022-07-07T20:43:11.4290284 404 : [{"timestamp":"2022-07-08T00:43:11.398+00:00","status":404,"error":"Not Found","message":"No message available","path":"/transfers"}]
 2022-07-07T20:46:05.2782061 404 : [{"timestamp":"2022-07-08T00:46:05.218+00:00","status":404,"error":"Not Found","message":"No message available","path":"/transfers"}]
+2022-07-07T21:15:32.4533207 500 : [{"timestamp":"2022-07-08T01:15:32.410+00:00","status":500,"error":"Internal Server Error","message":"No message available","path":"/transfers"}]

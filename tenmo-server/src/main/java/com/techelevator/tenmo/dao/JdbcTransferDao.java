@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class JdbcTransferDao {
+public class JdbcTransferDao implements TransferDao{
 
     private JdbcTemplate jdbcTemplate;
 
@@ -30,7 +30,7 @@ public class JdbcTransferDao {
     }
 
 
-
+@Override
     public boolean createSend(Transfer transfer) {
         String sql = "INSERT INTO transfer(transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, ammount) " +
                 "VALUES(DEFAULT, ?, ?, ?, ?, ?)";

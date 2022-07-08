@@ -30,10 +30,6 @@ public class AccountController {
 
     private AccountDao accountDao;
     private UserDao userDao;
-    private TransferDao transferDao;
-
-
-
 
     public AccountController(AccountDao accountDao, UserDao userDao){
 

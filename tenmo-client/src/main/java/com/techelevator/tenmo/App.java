@@ -138,6 +138,7 @@ public class App {
 	}
 
 	private void sendBucks() {
+
         Transfer transfer = consoleService.makeTransfer();
     transferService.addTransfer(transfer);
 		
