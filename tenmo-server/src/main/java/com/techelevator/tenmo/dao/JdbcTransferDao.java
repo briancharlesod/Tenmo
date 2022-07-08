@@ -13,6 +13,12 @@ public class JdbcTransferDao implements TransferDao{
 
     private JdbcTemplate jdbcTemplate;
 
+    public JdbcTransferDao(JdbcTemplate jdbcTemplate){
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+
+
 
     public List<Transfer> getTransferHistory(int id) {
         List<Transfer> transferHistory = new ArrayList<>();
@@ -32,7 +38,7 @@ public class JdbcTransferDao implements TransferDao{
 
 @Override
     public boolean createSend(Transfer transfer) {
-        String sql = "INSERT INTO transfer(transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, ammount) " +
+        String sql = "INSERT INTO transfer(transfer_id, transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                 "VALUES(DEFAULT, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, transfer.getTransfer_type_id(), transfer.getTransfer_status_id(), transfer.getAccount_from(), transfer.getAccount_to(), transfer.getAmount());
 

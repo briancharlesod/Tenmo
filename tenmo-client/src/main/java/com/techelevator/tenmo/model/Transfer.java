@@ -8,8 +8,6 @@ public class Transfer {
     private int transfer_status_id;
     private int account_from;
     private int account_to;
-
-
     private double amount;
 
     public Transfer() {

@@ -15,5 +15,7 @@ public interface AccountDao {
 
     public BigDecimal getBalance(int id);
 
+    public int getAccount(int id);
+
 
 }

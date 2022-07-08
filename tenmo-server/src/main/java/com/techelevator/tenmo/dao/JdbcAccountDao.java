@@ -35,11 +35,20 @@ public class JdbcAccountDao implements AccountDao{
         return account.getBalance();
     }
 
+    public int getAccount(int id) {
+        Account account = new Account();
+        String sql = "SELECT * FROM account WHERE user_id = ?";
+        SqlRowSet rowset = jdbcTemplate.queryForRowSet(sql, id);
+        if (rowset.next()) {
+            account = mapRowToAccount(rowset);
+        }
+        return account.getAccount_id();
+    }
 
     private Account mapRowToAccount(SqlRowSet rs) {
         Account account = new Account();
-        account.setAccount_id(rs.getLong("account_id"));
-        account.setUser_id(rs.getLong("user_id"));
+        account.setAccount_id(rs.getInt("account_id"));
+        account.setUser_id(rs.getInt("user_id"));
         account.setBalance(rs.getBigDecimal("balance"));
         return account;
     }
