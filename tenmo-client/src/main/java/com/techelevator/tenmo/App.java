@@ -6,6 +6,10 @@ import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
+
+import com.techelevator.tenmo.services.TransferService;
+import org.springframework.web.client.RestTemplate;
+
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.util.List;
 
+
 public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
@@ -23,6 +28,7 @@ public class App {
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
+    private final TransferService transferService = new TransferService();
 
     private AuthenticatedUser currentUser;
 
@@ -130,8 +136,12 @@ public class App {
 
     }
 
-    private void sendBucks() {
-        // TODO Auto-generated method stub
+	private void sendBucks() {
+
+        Transfer transfer = consoleService.makeTransfer();
+    transferService.addTransfer(transfer);
+		
+	}
 
     }
 

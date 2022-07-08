@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,10 @@ public class JdbcUserDao implements UserDao {
     private static final BigDecimal STARTING_BALANCE = new BigDecimal("1000.00");
     private JdbcTemplate jdbcTemplate;
 
+
     public JdbcUserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+
     }
 
     @Override
@@ -78,6 +81,9 @@ public class JdbcUserDao implements UserDao {
 
         return true;
     }
+
+
+
 
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
