@@ -15,10 +15,7 @@ import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class App {
@@ -30,6 +27,7 @@ public class App {
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
 
     private AuthenticatedUser currentUser;
+    private TransferService transferService;
     Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
