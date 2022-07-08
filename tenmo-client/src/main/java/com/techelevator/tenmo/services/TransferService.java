@@ -20,32 +20,14 @@ public class TransferService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final AuthenticatedUser authenticatedUser;
 
-    public TransferService(AuthenticatedUser authenticatedUser){
+
+    public TransferService(AuthenticatedUser authenticatedUser) {
         this.authenticatedUser = authenticatedUser;
     }
 
-    public Transfer addTransfer(Transfer newTransfer) {
-        Transfer returnedTransfer = null;
-        try {
-            returnedTransfer = restTemplate.postForObject(API_BASE_URL + "transfers", makeTransferEntity(newTransfer), Transfer.class);
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-        return returnedTransfer;
-    }
 
-    private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(authenticatedUser.getToken());
-        return new HttpEntity<>(transfer, headers);
-    }
 
-    private HttpEntity<Void> makeAuthEntity() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(authenticatedUser.getToken());
-        return new HttpEntity<>(headers);
-    }
+
 
     public Transfer[] viewTransferHistory() {
         Transfer[] transfers = null;
@@ -58,19 +40,18 @@ public class TransferService {
         return transfers;
     }
 
-    public User[] getUsers() {
-        String url = API_BASE_URL + "users";
-        User[] list = null;
-
-        try {
-            ResponseEntity<User[]> response = restTemplate.exchange(API_BASE_URL + "users", HttpMethod.GET, makeAuthEntity(), User[].class);
-            list = response.getBody();
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-        System.out.println(list);
-        return list;
-
+    private HttpEntity<Void> makeAuthEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(authenticatedUser.getToken());
+        return new HttpEntity<>(headers);
     }
-    }
+
+
+}
+
+
+
+
+
+
 
