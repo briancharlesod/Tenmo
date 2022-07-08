@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface TransferDao {
 
-    public List<Transfer> getTransferHistory(int id);
+     List<Transfer> getTransferHistory(int id);
+
+     boolean createSend(Transfer transfer);
 
 }

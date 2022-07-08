@@ -41,3 +41,6 @@
 2022-07-07T13:09:26.0167667 500 : [{"timestamp":"2022-07-07T17:09:26.012+00:00","status":500,"error":"Internal Server Error","message":"Invalid column name; nested exception is java.sql.SQLException: Invalid column name","path":"/accounts"}]
 2022-07-07T13:14:31.7235134 500 : [{"timestamp":"2022-07-07T17:14:31.669+00:00","status":500,"error":"Internal Server Error","message":"Invalid column name; nested exception is java.sql.SQLException: Invalid column name","path":"/accounts"}]
 >>>>>>> 366c176875cddd7211f10ac8a2a6fdb68fb9622c
+2022-07-07T20:27:04.6090487 404 : [{"timestamp":"2022-07-08T00:27:04.555+00:00","status":404,"error":"Not Found","message":"No message available","path":"/transfers"}]
+2022-07-07T20:43:11.4290284 404 : [{"timestamp":"2022-07-08T00:43:11.398+00:00","status":404,"error":"Not Found","message":"No message available","path":"/transfers"}]
+2022-07-07T20:46:05.2782061 404 : [{"timestamp":"2022-07-08T00:46:05.218+00:00","status":404,"error":"Not Found","message":"No message available","path":"/transfers"}]
