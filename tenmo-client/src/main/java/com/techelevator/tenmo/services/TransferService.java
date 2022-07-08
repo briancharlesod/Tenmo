@@ -26,10 +26,27 @@ public class TransferService {
     }
 
 
+    public TransferService(AuthenticatedUser authenticatedUser){
+        this.authenticatedUser = authenticatedUser;
+    }
 
 
 
 
+    public Transfer[] viewTransferHistory() {
+        Transfer[] transfers = null;
+        try {
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL + "transfers", HttpMethod.GET, makeAuthEntity(), Transfer[].class);
+            transfers = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return transfers;
+    }
+
+    public User[] getUsers() {
+        String url = API_BASE_URL + "users";
+        User[] list = null;
 
 }
 

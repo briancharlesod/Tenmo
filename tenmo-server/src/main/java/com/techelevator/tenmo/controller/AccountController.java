@@ -30,11 +30,6 @@ public class AccountController {
         this.transferDao = transferDao;
     }
 
-//    public AccountController() {
-//        this.userDao = new JdbcUserDao(new JdbcTemplate());
-//        this.accountDao = new JdbcAccountDao(new JdbcTemplate(),userDao);
-//    }
-
     @RequestMapping(path = "/accounts", method = RequestMethod.GET)
     public BigDecimal getBalance(Principal principal) {
         return accountDao.getBalance(userDao.findIdByUsername(principal.getName()));
