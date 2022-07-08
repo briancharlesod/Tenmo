@@ -2,7 +2,14 @@ package com.techelevator.tenmo.services;
 
 
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.util.BasicLogger;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -10,6 +17,7 @@ import java.util.Scanner;
 public class ConsoleService {
 
     private final Scanner scanner = new Scanner(System.in);
+    RestTemplate restTemplate = new RestTemplate();
 
     public int promptForMenuSelection(String prompt) {
         int menuSelection;
@@ -89,31 +97,8 @@ public class ConsoleService {
         System.out.println("An error occurred. Check the log for details.");
     }
 
-    public Transfer makeTransfer() {
-        // list of users
-        Transfer transfer = null;
-        System.out.println("Enter User Id: ");
-        String strId = scanner.nextLine();
-        System.out.println("Enter Amount: ");
-        String strAmount = scanner.nextLine();
 
-        try {
-            int id = Integer.parseInt(strId);
-            double Amount = Double.parseDouble(strAmount);
-            transfer = new Transfer();
-            transfer.setAccount_from(2001);
-            transfer.setAccount_to(id);
-            transfer.setAmount(Amount);
-            transfer.setTransfer_status_id(2);
-            transfer.setTransfer_type_id(2);
 
-        }
-
-             catch (NumberFormatException e) {
-                 System.out.println("error");
-            }
-        return transfer;
-        }
     }
 
 

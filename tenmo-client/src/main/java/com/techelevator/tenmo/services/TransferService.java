@@ -24,11 +24,9 @@ public class TransferService {
         this.authenticatedUser = authenticatedUser;
     }
 
-    private HttpEntity<Void> makeAuthEntity() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(authenticatedUser.getToken());
-        return new HttpEntity<>(headers);
-    }
+
+
+
 
     public Transfer[] viewTransferHistory() {
         Transfer[] transfers = null;
@@ -40,5 +38,19 @@ public class TransferService {
         }
         return transfers;
     }
+
+    private HttpEntity<Void> makeAuthEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(authenticatedUser.getToken());
+        return new HttpEntity<>(headers);
+    }
+
+
 }
+
+
+
+
+
+
 
