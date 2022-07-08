@@ -28,19 +28,9 @@ public class AccountController {
         this.transferDao = transferDao;
     }
 
-//    public AccountController() {
-//        this.userDao = new JdbcUserDao(new JdbcTemplate());
-//        this.accountDao = new JdbcAccountDao(new JdbcTemplate(),userDao);
-//    }
-
     @RequestMapping(path = "/accounts", method = RequestMethod.GET)
     public BigDecimal getBalance(Principal principal) {
         return accountDao.getBalance(userDao.findIdByUsername(principal.getName()));
-    }
-
-    @RequestMapping(path = "/accounts/transfers", method = RequestMethod.GET)
-    public List<Transfer> getTransferHistory(Principal principal) {
-        return transferDao.getTransferHistory(userDao.findIdByUsername(principal.getName()));
     }
 
 }

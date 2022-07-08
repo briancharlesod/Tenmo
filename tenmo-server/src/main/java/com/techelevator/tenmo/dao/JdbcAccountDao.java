@@ -20,14 +20,9 @@ public class JdbcAccountDao implements AccountDao{
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     public BigDecimal getBalance(int id) {
         Account account = new Account();
-
-
-
         String url = "SELECT * FROM account WHERE user_id = ?";
-
         SqlRowSet results = jdbcTemplate.queryForRowSet(url, id);
         if (results.next()) {
             account = mapRowToAccount(results);
