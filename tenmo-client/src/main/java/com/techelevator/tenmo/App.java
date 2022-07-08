@@ -44,6 +44,7 @@ public class App {
             mainMenu();
         }
     }
+
     private void loginMenu() {
         int menuSelection = -1;
         while (menuSelection != 0 && currentUser == null) {
@@ -102,10 +103,7 @@ public class App {
         }
     }
 
-	private void viewCurrentBalance() {
-
-    String url = API_BASE_URL + "/accounts";
-
+    private void viewCurrentBalance() {
         BigDecimal balance = null;
         try {
             ResponseEntity<BigDecimal> response =
@@ -116,10 +114,9 @@ public class App {
             BasicLogger.log(e.getMessage());
         }
         System.out.println(balance);
+    }
 
-	}
-
-	private void viewTransferHistory() {
+    private void viewTransferHistory() {
         Transfer[] transfers = null;
         try {
             ResponseEntity<Transfer[]> response =
@@ -129,13 +126,15 @@ public class App {
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
-        System.out.println(transfers);
+        for (Transfer transfer : transfers) {
+            System.out.println("Transfer ID: " + transfer.getTransfer_id() + " | From Account No.: " + transfer.getAccount_from() + " | To Account No.: " + transfer.getAccount_to() + " | $" + transfer.getAmount());
+        }
     }
 
-	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
-		
-	}
+    private void viewPendingRequests() {
+        // TODO Auto-generated method stub
+
+    }
 
 	private void sendBucks() {
 
@@ -144,10 +143,12 @@ public class App {
 		
 	}
 
-	private void requestBucks() {
-		// TODO Auto-generated method stub
-		
-	}
+    }
+
+    private void requestBucks() {
+        // TODO Auto-generated method stub
+
+    }
 
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();

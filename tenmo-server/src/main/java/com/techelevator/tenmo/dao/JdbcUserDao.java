@@ -18,11 +18,11 @@ public class JdbcUserDao implements UserDao {
 
     private static final BigDecimal STARTING_BALANCE = new BigDecimal("1000.00");
     private JdbcTemplate jdbcTemplate;
-    private UserDao userDao;
 
-    public JdbcUserDao(JdbcTemplate jdbcTemplate, UserDao userDao) {
+
+    public JdbcUserDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.userDao = userDao;
+
     }
 
     @Override
@@ -83,16 +83,6 @@ public class JdbcUserDao implements UserDao {
     }
 
 
-    public List<User> findAllButYou(Principal principal) {
-        List<User> users = new ArrayList<>();
-        String sql = "SELECT user_id, username FROM tenmo_user WHERE user_id != ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userDao.findIdByUsername(principal.getName()));
-        while(results.next()) {
-            User user = mapRowToUser(results);
-            users.add(user);
-        }
-        return users;
-    }
 
 
     private User mapRowToUser(SqlRowSet rs) {

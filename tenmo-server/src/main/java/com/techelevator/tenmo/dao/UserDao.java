@@ -15,5 +15,5 @@ public interface UserDao {
 
     boolean create(String username, String password);
 
-    List<User> findAllButYou(Principal principal);
+
 }
