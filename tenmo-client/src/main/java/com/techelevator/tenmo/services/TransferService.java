@@ -24,23 +24,6 @@ public class TransferService {
         this.authenticatedUser = authenticatedUser;
     }
 
-    public Transfer addTransfer(Transfer newTransfer) {
-        Transfer returnedTransfer = null;
-        try {
-            returnedTransfer = restTemplate.postForObject(API_BASE_URL + "transfers", makeTransferEntity(newTransfer), Transfer.class);
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-        return returnedTransfer;
-    }
-
-    private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(authenticatedUser.getToken());
-        return new HttpEntity<>(transfer, headers);
-    }
-
     private HttpEntity<Void> makeAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authenticatedUser.getToken());
