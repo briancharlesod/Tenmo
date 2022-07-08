@@ -20,7 +20,7 @@ public class TransferService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final AuthenticatedUser authenticatedUser;
 
-    public TransferService(AuthenticatedUser authenticatedUser){
+    public TransferService(AuthenticatedUser authenticatedUser) {
         this.authenticatedUser = authenticatedUser;
     }
 
@@ -57,20 +57,5 @@ public class TransferService {
         }
         return transfers;
     }
-
-    public User[] getUsers() {
-        String url = API_BASE_URL + "users";
-        User[] list = null;
-
-        try {
-            ResponseEntity<User[]> response = restTemplate.exchange(API_BASE_URL + "users", HttpMethod.GET, makeAuthEntity(), User[].class);
-            list = response.getBody();
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-        System.out.println(list);
-        return list;
-
-    }
-    }
+}
 
