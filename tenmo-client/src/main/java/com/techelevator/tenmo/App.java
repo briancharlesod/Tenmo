@@ -134,10 +134,7 @@ public class App {
                 accountService.viewBalance(makeAuthEntity()),
                 makeAuthEntity()
         );
-        Transfer transferFromAPI = transferService.addTransfer(transferFromCLI);
-        if (transferFromAPI == null) {
-            consoleService.printErrorMessage();
-        }
+        transferService.addTransfer(transferFromCLI);
     }
 
     private void requestBucks() {

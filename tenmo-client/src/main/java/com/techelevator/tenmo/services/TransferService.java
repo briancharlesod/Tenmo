@@ -85,20 +85,20 @@ public class TransferService {
             transfer.setTransfer_status_id(2);
             transfer.setTransfer_type_id(2);
         } catch (NumberFormatException e) {
-            System.out.println("Encountered an error.");
+            System.out.println("\nInsufficient funds.");
         }
         return transfer;
     }
 
     public Transfer addTransfer(Transfer transfer) {
-        if (transfer.getTransfer_status_id() != 2) {
+        if (transfer!=null && transfer.getTransfer_status_id() != 2) {
             return null;
         }
         Transfer newTransfer = null;
         try {
             newTransfer = restTemplate.postForObject(apiBaseUrl + "transfers",
                     makeTransferEntity(transfer), Transfer.class);
-            System.out.println("Transaction Complete");
+            System.out.println("\nTransaction Complete");
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
