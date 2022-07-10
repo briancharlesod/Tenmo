@@ -149,7 +149,8 @@ public class Transfer {
                 "\n To User: " + username_to +
                 "\n To User Id: " + user_id_to +
                 "\n To account Id: " + account_to +
-                "\n amount: " + amount;
+                "\n Amount: $" + amount;
     }
+
 }
 

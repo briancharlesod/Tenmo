@@ -1,10 +1,12 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.*;
+import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 
 import com.techelevator.tenmo.services.TransferService;
+import org.apiguardian.api.API;
 import org.springframework.web.client.RestTemplate;
 
 import com.techelevator.util.BasicLogger;
@@ -27,8 +29,8 @@ public class App {
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
 
     private AuthenticatedUser currentUser;
+    private AccountService accountService;
     private TransferService transferService;
-    Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         App app = new App();
@@ -72,7 +74,8 @@ public class App {
     private void handleLogin() {
         UserCredentials credentials = consoleService.promptForCredentials();
         currentUser = authenticationService.login(credentials);
-        transferService = new TransferService(currentUser);
+        transferService = new TransferService(currentUser, API_BASE_URL, restTemplate);
+        accountService = new AccountService(currentUser, API_BASE_URL, restTemplate);
         if (currentUser == null) {
             consoleService.printErrorMessage();
         }
@@ -102,37 +105,17 @@ public class App {
         }
     }
 
-    private BigDecimal viewCurrentBalance() {
-        BigDecimal balance = null;
-        try {
-            ResponseEntity<BigDecimal> response =
-                    restTemplate.exchange(API_BASE_URL + "accounts",
-                            HttpMethod.GET, makeAuthEntity(), BigDecimal.class);
-            balance = response.getBody();
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-        System.out.println(balance);
-        return balance;
+    private void viewCurrentBalance() {
+        System.out.println(accountService.viewBalance(makeAuthEntity()));
     }
 
     private void viewTransferHistory() {
-        Transfer[] transfers = transferService.viewTransferHistory();
-        Map<Integer,Transfer> transferIdMap = new LinkedHashMap<>();
-        transferIdMap.put(0,null);
-        if (transfers != null) {
-            for (Transfer transfer : transfers) {
-                transferIdMap.put(transfer.getTransfer_id(),transfer);
-                System.out.println("ID " + transfer.getTransfer_id() + " | FROM: " + transfer.getUsername_from() + " | TO: " + transfer.getUsername_to() + " | $" + transfer.getAmount());
-            }
-        } else {
-            consoleService.printErrorMessage();
-        }
+        Map<Integer, Transfer> transferIdMap = transferService.viewTransferHistory(makeAuthEntity());
         int transferSelection = -1;
         while (!transferIdMap.containsKey(transferSelection)) {
             transferSelection = consoleService.promptForMenuSelection("Please enter transfer ID to view details (0 to cancel): ");
         }
-        if(transferSelection == 0){
+        if (transferSelection == 0) {
             mainMenu();
         }
         System.out.println(transferIdMap.get(transferSelection));
@@ -143,21 +126,19 @@ public class App {
 
     }
 
-	private void sendBucks() {
-
-
-        listUsers();
-        Transfer transferFromCLI = makeTransfer();
-        Transfer transferFromAPI = addTransfer(transferFromCLI);
+    private void sendBucks() {
+        transferService.listUsers(makeAuthEntity());
+        Transfer transferFromCLI = transferService.makeTransfer(
+                consoleService.promptForString("Please enter recipient's ID: "),
+                consoleService.promptForString("Please enter amount to send: "),
+                accountService.viewBalance(makeAuthEntity()),
+                makeAuthEntity()
+        );
+        Transfer transferFromAPI = transferService.addTransfer(transferFromCLI);
         if (transferFromAPI == null) {
             consoleService.printErrorMessage();
         }
-
-		
-	}
-
-
-
+    }
 
     private void requestBucks() {
         // TODO Auto-generated method stub
@@ -168,102 +149,6 @@ public class App {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(currentUser.getToken());
         return new HttpEntity<>(headers);
-    }
-
-
-    public Transfer addTransfer(Transfer newTransfer) {
-        Transfer returnedTransfer = null;
-        try {
-            returnedTransfer = restTemplate.postForObject(API_BASE_URL + "transfers",
-                    makeTransferEntity(newTransfer), Transfer.class);
-            System.out.println("Transaction Complete");
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-        return returnedTransfer;
-    }
-
-    private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(currentUser.getToken());
-        return new HttpEntity<>(transfer, headers);
-    }
-
-    public void listUsers() {
-        User[] users = null;
-        try {
-            ResponseEntity<User[]> response =
-                    restTemplate.exchange(API_BASE_URL + "users",
-                            HttpMethod.GET, makeAuthEntity(), User[].class);
-            users = response.getBody();
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-        if (users != null) {
-            for(User i: users) {
-                if(currentUser.getUser().getUsername().equals(i.getUsername())) {
-                } else {
-                    System.out.println(i);
-                }
-            }
-        }
-    }
-
-
-
-
-    public Transfer makeTransfer() {
-        // list of users
-        Transfer transfer = null;
-        System.out.println("Enter User Id: ");
-        String strId = scanner.nextLine();
-        System.out.println("Enter Amount: ");
-        String strAmount = scanner.nextLine();
-
-
-        try {
-            int id = Integer.parseInt(strId);
-            double amount = Double.parseDouble(strAmount);
-            int AccountId = userToAccountId(id);
-            double compareAmount = Double.valueOf(viewCurrentBalance().doubleValue());
-
-            if (amount > compareAmount) {
-                throw new NumberFormatException();
-            }
-            if (amount <= 0) {
-                throw new NumberFormatException();
-            }
-            Long l = currentUser.getUser().getId();
-            Integer sender = Integer.valueOf(l.intValue());
-            Integer senderId = userToAccountId(sender);
-            transfer = new Transfer();
-            transfer.setAccount_from(senderId);
-            transfer.setAccount_to(AccountId);
-            transfer.setAmount(amount);
-            transfer.setTransfer_status_id(2);
-            transfer.setTransfer_type_id(2);
-
-        }
-
-        catch (NumberFormatException e) {
-            System.out.println("error");
-        }
-        return transfer;
-    }
-
-    public int userToAccountId(int id) {
-        int num = 0;
-        try {
-            ResponseEntity<Integer> response =
-                    restTemplate.exchange(API_BASE_URL + "accounts/" + id,
-                            HttpMethod.GET, makeAuthEntity(), Integer.class);
-            num = response.getBody();
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-
-        return num;
     }
 
 }

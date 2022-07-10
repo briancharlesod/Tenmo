@@ -58,8 +58,6 @@ public class JdbcUserDao implements UserDao {
         throw new UsernameNotFoundException("User " + username + " was not found.");
     }
 
-
-
     @Override
     public boolean create(String username, String password) {
 
@@ -83,9 +81,6 @@ public class JdbcUserDao implements UserDao {
 
         return true;
     }
-
-
-
 
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
