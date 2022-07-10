@@ -64,13 +64,11 @@ public class TransferService {
 
     public Transfer makeTransfer(String strId, String strAmount, BigDecimal currentBalance, HttpEntity<Void> authEntity) {
         Transfer transfer = null;
+        int userToId = Integer.parseInt(strId);
+        double amount = Double.parseDouble(strAmount);
         try {
-            int userToId = Integer.parseInt(strId);
-            double amount = Double.parseDouble(strAmount);
             int accountToId = userToAccountId(userToId, authEntity);
-            double compareAmount = currentBalance.doubleValue();
-
-            if (amount > compareAmount) {
+            if (amount > currentBalance.doubleValue()) {
                 throw new NumberFormatException();
             }
             if (amount <= 0) {
@@ -90,19 +88,17 @@ public class TransferService {
         return transfer;
     }
 
-    public Transfer addTransfer(Transfer transfer) {
-        if (transfer!=null && transfer.getTransfer_status_id() != 2) {
-            return null;
+    public void addTransfer(Transfer transfer) {
+        if (transfer != null && transfer.getTransfer_status_id() != 2) {
+            return;
         }
-        Transfer newTransfer = null;
         try {
-            newTransfer = restTemplate.postForObject(apiBaseUrl + "transfers",
+            restTemplate.postForObject(apiBaseUrl + "transfers",
                     makeTransferEntity(transfer), Transfer.class);
             System.out.println("\nTransaction Complete");
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
-        return newTransfer;
     }
 
     public int userToAccountId(int userId, HttpEntity<Void> authEntity) {

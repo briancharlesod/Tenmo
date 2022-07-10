@@ -99,7 +99,7 @@ public class App {
             } else if (menuSelection == 0) {
                 continue;
             } else {
-                System.out.println("Invalid Selection");
+                System.out.println("\nInvalid Selection");
             }
             consoleService.pause();
         }

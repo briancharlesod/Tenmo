@@ -141,7 +141,7 @@ public class Transfer {
                 "\n Transfer Details" +
                 "\n--------------------------------------------" +
                 "\n Id: " + transfer_id +
-                "\n Type: " + transfer_status_desc +
+                "\n Type: " + transfer_type_desc +
                 "\n Status: " + transfer_status_desc +
                 "\n From User: " + username_from +
                 "\n From User Id: " + user_id_from +
