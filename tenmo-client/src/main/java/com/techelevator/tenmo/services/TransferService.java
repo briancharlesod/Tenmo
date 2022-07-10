@@ -126,8 +126,7 @@ public class TransferService {
         }
         if (users != null) {
             for (User user : users) {
-                if (authenticatedUser.getUser().getUsername().equals(user.getUsername())) {
-                } else {
+                if (!authenticatedUser.getUser().getUsername().equals(user.getUsername())) {
                     System.out.println(user);
                 }
             }
