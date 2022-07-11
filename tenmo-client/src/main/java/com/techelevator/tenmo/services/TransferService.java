@@ -75,7 +75,7 @@ public class TransferService {
                 throw new NumberFormatException();
             }
             int userFromId = authenticatedUser.getUser().getId().intValue();
-            if(userToId == userFromId){
+            if (userToId == userFromId) {
                 System.out.println("\nYou cannot send TE bucks to yourself.");
                 return null;
             }
@@ -136,6 +136,7 @@ public class TransferService {
             }
         }
     }
+
 }
 
 
